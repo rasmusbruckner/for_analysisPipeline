@@ -14,7 +14,7 @@ classdef ForAgentVars
         sigma_H = 1; % catch-trial standard deviation (uncertainty) of helicopter cue
         tau_0 = 0.5; % initial relative uncertainty
         omega_0 = 1; % initial change-point probability
-        mu_0 = 3.1416; % initial belief about mean
+        mu_0 = pi; % initial belief about mean
         max_x = 2*pi; % maximum outcome
 
     end
