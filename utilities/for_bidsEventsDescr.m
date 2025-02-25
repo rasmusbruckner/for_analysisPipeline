@@ -42,8 +42,8 @@ metadataBehav.delta_t.Units = 'integers';
 
 % a_t
 metadataBehav.a_t.LongName = 'update';
-metadataBehav.b_t.Description = 'Difference between two predictions';
-metadataBehav.b_t.Units = 'integers';
+metadataBehav.a_t.Description = 'Difference between two predictions';
+metadataBehav.a_t.Units = 'integers';
 
 % e_t
 metadataBehav.e_t.LongName = 'estimation error';
