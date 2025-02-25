@@ -32,10 +32,10 @@ reg_vars.which_vars.beta_2 = true; % interaction PE and RU
 reg_vars.which_vars.beta_3 = true; % interaction PE and CPP
 reg_vars.which_vars.beta_4 = true; % interaction PE and hit
 reg_vars.which_vars.beta_5 = true; % interaction PE and noise condition
-reg_vars.which_vars.beta_6 = true; % interaction PE and visible
-reg_vars.which_vars.beta_7 = true; % interaction EE and visible
+reg_vars.which_vars.beta_6 = false; % interaction PE and visible
+reg_vars.which_vars.beta_7 = false; % interaction EE and visible
 reg_vars.which_vars.omikron_0 = true; % motor noise (independent of UP)
-reg_vars.which_vars.omikron_1 = false; % learning-rate noise (dependent on UP)
+reg_vars.which_vars.omikron_1 = true; % learning-rate noise (dependent on UP)
 reg_vars.which_vars.uniform = false; % uniform component for outlier predictions
 reg_vars.regressionComponents = [reg_vars.which_vars.beta_0, reg_vars.which_vars.beta_1,...
     reg_vars.which_vars.beta_2, reg_vars.which_vars.beta_3, reg_vars.which_vars.beta_4,...
@@ -46,16 +46,45 @@ regression = ForRegression(reg_vars);
 
 % Sample random model parameters that we try to recover
 df_params = table();
-df_params.beta_0 = unifrnd(-0.5,0.5, n_subj, 1);
-df_params.beta_1 = rand(n_subj, 1);
-df_params.beta_2 = rand(n_subj,1);
-df_params.beta_3 = rand(n_subj,1);
-df_params.beta_4 = rand(n_subj,1);
-df_params.beta_5 = unifrnd(-0.1,0.1, n_subj, 1);
-df_params.beta_6 = unifrnd(-0.1,0.1, n_subj, 1);
-df_params.beta_7 = unifrnd(-0.1,0.1, n_subj, 1);
+
+if reg_vars.which_vars.beta_0
+    df_params.beta_0 = unifrnd(-0.5,0.5, n_subj, 1);
+end
+
+if reg_vars.which_vars.beta_1
+    df_params.beta_1 = rand(n_subj, 1);
+end
+
+if reg_vars.which_vars.beta_2
+    df_params.beta_2 = rand(n_subj,1);
+end
+
+if reg_vars.which_vars.beta_3
+    df_params.beta_3 = rand(n_subj,1);
+end
+
+if reg_vars.which_vars.beta_4
+    df_params.beta_4 = rand(n_subj,1);
+end
+
+if reg_vars.which_vars.beta_5
+    df_params.beta_5 = unifrnd(-0.1,0.1, n_subj, 1);
+end
+
+if reg_vars.which_vars.beta_6
+    df_params.beta_6 = unifrnd(-0.1,0.1, n_subj, 1);
+end
+
+if reg_vars.which_vars.beta_7
+    df_params.beta_7 = unifrnd(-0.1,0.1, n_subj, 1);
+end
+
 df_params.omikron_0 = unifrnd(10, 100, n_subj,1);
-df_params.omikron_1 = rand(n_subj, 1) * 0.1;
+
+if reg_vars.which_vars.omikron_0
+    df_params.omikron_1 = rand(n_subj, 1) * 0.1;
+end
+
 df_params.subj_num = (1:n_subj)';
 
 % Simulate updates based on sampled parameters
