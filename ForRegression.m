@@ -205,18 +205,6 @@ classdef ForRegression
             % Regression coefficients
             results.parameters = nan(obj.n_subj, sum(which_vars_vec));
 
-            % Error terms
-            if obj.which_vars.omikron_1
-                results.errorTerms = nan(obj.n_subj,2);
-            else
-                results.errorTerms = nan(obj.n_subj,1);
-            end
-
-            % Uniform component
-            if obj.which_vars.uniform
-                results.uniform = nan(obj.n_subj,1);
-            end
-
             % Negative log-likelihood
             results.llh = nan(obj.n_subj,1);
 
