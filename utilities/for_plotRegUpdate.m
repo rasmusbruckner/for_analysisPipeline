@@ -33,4 +33,7 @@ plot(xi, f, 'r', 'LineWidth', 2, "color", "k"); % Overlay KDE curve
 [f, xi] = ksdensity(predUp); % Kernel Density Estimation
 plot(xi, f, 'r', 'LineWidth', 2, "color", "b"); % Overlay KDE curve
 
+% Add legend
+legend(["Participants", "Model predictions"])
+
 end

@@ -71,8 +71,8 @@ reg_vars.which_vars.beta_4 = true; % interaction PE and hit
 reg_vars.which_vars.beta_5 = true; % interaction PE and noise condition
 reg_vars.which_vars.beta_6 = false; % interaction PE and visible
 reg_vars.which_vars.beta_7 = false; % interaction EE and visible
-reg_vars.which_vars.omikron_0 = true; % motor noise (independent of UP)
-reg_vars.which_vars.omikron_1 = true; % learning-rate noise (dependent on UP)
+reg_vars.which_vars.omikron_0 = true; % motor noise (independent of PE)
+reg_vars.which_vars.omikron_1 = true; % learning-rate noise (dependent on PE)
 reg_vars.which_vars.uniform = false; % uniform component for outlier predictions
 reg_vars.regressionComponents = [reg_vars.which_vars.beta_0, reg_vars.which_vars.beta_1,...
     reg_vars.which_vars.beta_2, reg_vars.which_vars.beta_3, reg_vars.which_vars.beta_4,...
@@ -95,17 +95,48 @@ for_parameterSummary(results.parameters, behavLabels, gridSize)
 % ----------------------------------------------------
 % 4. Compare actual and predicted update distributions
 % ----------------------------------------------------
-
-% Take actual parameter values
+ 
+% Take actual parameter values given specified free parameters
 df_params = table();
-df_params.beta_0 = results.parameters.beta_0;
-df_params.beta_1 = results.parameters.beta_1;
-df_params.beta_2 = results.parameters.beta_2;
-df_params.beta_3 = results.parameters.beta_3;
-df_params.beta_4 = results.parameters.beta_4;
-df_params.beta_5 = results.parameters.beta_5;
+if reg_vars.which_vars.beta_0
+    df_params.beta_0 = results.parameters.beta_0;
+end
+
+if reg_vars.which_vars.beta_1
+    df_params.beta_1 = results.parameters.beta_1;
+end
+
+if reg_vars.which_vars.beta_2
+    df_params.beta_2 = results.parameters.beta_2;
+end
+
+if reg_vars.which_vars.beta_3
+    df_params.beta_3 = results.parameters.beta_3;
+end
+
+if reg_vars.which_vars.beta_4
+    df_params.beta_4 = results.parameters.beta_4;
+end
+
+if reg_vars.which_vars.beta_5
+    df_params.beta_5 = results.parameters.beta_5;
+end
+
+if reg_vars.which_vars.beta_6
+    df_params.beta_6 = results.parameters.beta_6;
+end
+
+if reg_vars.which_vars.beta_7
+    df_params.beta_7 = results.parameters.beta_7;
+end
+
+% omikron_0 should be true by default
 df_params.omikron_0 = results.parameters.omikron_0;
-df_params.omikron_1 = results.parameters.omikron_1;
+
+if reg_vars.which_vars.omikron_1
+    df_params.omikron_1 = results.parameters.omikron_1;
+end
+
 df_params.subj_num = (1:n_subj)';
 
 % Sample updates from regression model

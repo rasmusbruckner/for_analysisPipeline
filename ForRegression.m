@@ -190,6 +190,11 @@ classdef ForRegression
             %   Ouptut
             %       results: Structure with coefficients, error terms, and
             %       negative log-likelihood
+            
+            % Throw error if omikron_0 not free
+            if obj.which_vars.omikron_0 == false
+                error("Regression model needs omikron_0 parameter. Please add it back in")
+            end
 
             % Free parameters
             which_vars_vec = struct2array(obj.which_vars);
@@ -494,7 +499,7 @@ classdef ForRegression
             end
 
             % Number of simulations
-            n_sim = length(df_params.beta_1);
+            n_sim = length(df_params.omikron_0);
 
             % Initialize
             df_data = table(); % regression predictors

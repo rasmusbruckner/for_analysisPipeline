@@ -36,7 +36,7 @@ for i = 1:size(varNormCoeffs, 2)
     hold on
 
     % Barplot
-    bar(i, [mean(parameters(:,i))], 'FaceColor', 'k')
+    bar(i, [mean(parameters(:,i))], 'FaceColor', 'b', 'facealpha', 0.5)
 
     % Jitter
     plot(ones(nSubj, 1).*i+xJit(:,i), parameters(:,i), 'o',...
