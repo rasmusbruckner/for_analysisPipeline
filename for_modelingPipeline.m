@@ -44,6 +44,7 @@ est_vars.which_vars.h = true;
 est_vars.which_vars.s = true;
 est_vars.which_vars.u = true;
 est_vars.which_vars.sigma_H = true;
+% Todo: examine plausible boundaries, currently not really plausuble for radians
 
 % Set agent variables
 agent_vars = ForAgentVars();
