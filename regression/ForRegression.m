@@ -218,7 +218,7 @@ classdef ForRegression
                 waitbar(i/obj.n_subj,f,'Estimating regression model');
 
                 % Logical index for ID
-                indices = (allSubBehavData.ID == i);
+                indices = (allSubBehavData.subj_num == i);
 
                 % Extract subset for fields dynamically
                 subBehavData = structfun(@(x) x(indices), allSubBehavData, 'UniformOutput', false);
@@ -346,7 +346,7 @@ classdef ForRegression
             if obj.which_vars.omikron_1
 
                 % Combining motor and learning-rate noise
-                abs_dist = abs(data.X(:,2));
+                abs_dist = abs(yHat);
                 motor_noise = params(sum(obj.regressionComponents)+1);
                 lr_noise = params(sum(obj.regressionComponents)+2);
                 concentration = residual_fun(abs_dist, motor_noise, lr_noise);
@@ -477,7 +477,7 @@ classdef ForRegression
             %       allSubBehavData: Optional subject behavioral data
             %
             %   Output
-            %       df_sim: Samples regression updates
+            %       df_sim: Sampled regression updates
 
             % Check if file name suffix is provided
             if ~exist('allSubBehavData', 'var') || isempty(allSubBehavData)
@@ -515,7 +515,7 @@ classdef ForRegression
                     % Optionally based on subject data:
 
                     % Logical index for ID
-                    indices = (allSubBehavData.ID == i);
+                    indices = (allSubBehavData.subj_num == i);
 
                     % Extract subset for fields dynamically
                     subBehavData = structfun(@(x) x(indices), allSubBehavData, 'UniformOutput', false);
@@ -557,7 +557,7 @@ classdef ForRegression
                 if obj.which_vars.omikron_1
 
                     % Compute updating noise based on common function
-                    abs_dist = abs(datamat(:,2));
+                    abs_dist = abs(yHat);
                     motor_noise = sel_coeffs(sum(obj.regressionComponents)+1);
                     lr_noise = sel_coeffs(sum(obj.regressionComponents)+2);
                     concentration = residual_fun(abs_dist, motor_noise, lr_noise);
@@ -568,11 +568,15 @@ classdef ForRegression
                 end
 
                 % Sample updates from Gaussian using standard deviation
-                yHat = normrnd(yHat, sqrt(1./concentration));
+                % yHat = normrnd(yHat, sqrt(1./concentration));
+                for j = 1:length(yHat)
+                    yHat(j) = circ_vmrnd(yHat(j), concentration(j), 1);
+                end
+                % todo: van mises!
 
                 % Store update and ID
                 df_data.a_t = yHat;
-                df_data.ID = repmat(i, height(df_data), 1);
+                df_data.subj_num = repmat(i, height(df_data), 1);
 
                 % Combine all data
                 df_sim = [df_sim; df_data];

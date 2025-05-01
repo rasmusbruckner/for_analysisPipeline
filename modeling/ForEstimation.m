@@ -125,8 +125,8 @@ classdef ForEstimation
                 % Update waitbar
                 waitbar(i/obj.n_subj,f,'Estimating RBM');
 
-                % Logical index for ID
-                indices = (allSubBehavData.ID == i);
+                % Logical index for subject number
+                indices = (allSubBehavData.subj_num == i);
 
                 % Extract subset for fields dynamically
                 subBehavData = structfun(@(x) x(indices), allSubBehavData, 'UniformOutput', false);
@@ -210,7 +210,7 @@ classdef ForEstimation
             end
                       
             % Compute BIC
-            bic = obj.compute_bic(bestNegLogLike, sum(which_vars_vec), length(df_subj.ID));
+            bic = obj.compute_bic(bestNegLogLike, sum(which_vars_vec), length(df_subj.subj_num));
         
         end
         

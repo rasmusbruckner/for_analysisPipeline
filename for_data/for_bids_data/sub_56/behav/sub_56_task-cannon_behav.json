@@ -16,7 +16,7 @@
 	},
 	"b_t": {
 		"LongName": "b_t",
-		"Description": "Difference between two predictions",
+		"Description": "Current prediction",
 		"Units": "integers"
 	},
 	"delta_t": {
@@ -25,7 +25,9 @@
 		"Units": "integers"
 	},
 	"a_t": {
-		"LongName": "update"
+		"LongName": "update",
+		"Description": "Difference between two predictions",
+		"Units": "integers"
 	},
 	"e_t": {
 		"LongName": "estimation error",

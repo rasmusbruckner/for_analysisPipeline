@@ -91,7 +91,8 @@ classdef AlAgentRBM
                 w_t = obj.sigma_t_sq / (obj.sigma_t_sq + obj.sigma_H^2);
 
                 % Update belief with helicopter location
-                obj.mu_t = mod((1 - w_t) * obj.mu_t + w_t * mu_H, obj.max_x);
+                % obj.mu_t = (1 - w_t) * obj.mu_t + w_t * mu_H, obj.max_x;
+                obj.mu_t = weighted_circular_mean([obj.mu_t, mu_H], [1-w_t, w_t]);
 
                 % Compute belief update considering helicopter cue
                 obj.a_t  = circ_dist(obj.mu_t, b_t);

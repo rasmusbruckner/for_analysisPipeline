@@ -5,7 +5,7 @@
 % 3. Plot correlations
 
 % Number of random starting points for regression estimation
-n_sp = 30;
+n_sp = 15;
 
 % Number of simulations for recovery
 n_subj = 100;
@@ -48,7 +48,7 @@ regression = ForRegression(reg_vars);
 df_params = table();
 
 if reg_vars.which_vars.beta_0
-    df_params.beta_0 = unifrnd(-0.5,0.5, n_subj, 1);
+    df_params.beta_0 = unifrnd(-0.1,0.1, n_subj, 1);
 end
 
 if reg_vars.which_vars.beta_1
@@ -79,10 +79,10 @@ if reg_vars.which_vars.beta_7
     df_params.beta_7 = unifrnd(-0.1,0.1, n_subj, 1);
 end
 
-df_params.omikron_0 = unifrnd(10, 100, n_subj,1);
+df_params.omikron_0 = unifrnd(3, 10, n_subj,1);
 
-if reg_vars.which_vars.omikron_0
-    df_params.omikron_1 = rand(n_subj, 1) * 0.1;
+if reg_vars.which_vars.omikron_1
+    df_params.omikron_1 = rand(n_subj, 1) * 0.3;
 end
 
 df_params.subj_num = (1:n_subj)';

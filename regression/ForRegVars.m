@@ -26,7 +26,7 @@ classdef ForRegVars
         beta_5_x0 = 0; % kappa*PE
         beta_6_x0 = 0; % visible*PE
         beta_7_x0 = 0; % visible*EE
-        omikron_0_x0 = 100; % motor noise
+        omikron_0_x0 = 10; % motor noise
         omikron_1_x0 = 0.1; % learning-rate noise
         uniform_x0 = 0.05; % uniform component
 
@@ -39,8 +39,8 @@ classdef ForRegVars
         beta_5_x0_range = [0, 1];
         beta_6_x0_range = [-1, 1];
         beta_7_x0_range = [0, 1];
-        omikron_0_x0_range = [0.1, 100];
-        omikron_1_x0_range = [0, 0.1];
+        omikron_0_x0_range = [1, 10];
+        omikron_1_x0_range = [0, 0.5];
         uniform_x0_range = [0, 1];
 
         % When prior is used: pior mean
@@ -68,8 +68,8 @@ classdef ForRegVars
         beta_5_prior_width = 5;
         beta_6_prior_width = 5;
         beta_7_prior_width = 5;
-        omikron_0_prior_width = 5;
-        omikron_1_prior_width = 5;
+        omikron_0_prior_width = 10;
+        omikron_1_prior_width = 0.1;
         uniform_prior_width = 5;
 
         % Parameters that should be estimated
@@ -120,7 +120,7 @@ classdef ForRegVars
             obj.lowerBoundaries.beta_5_lb = -3.5;
             obj.lowerBoundaries.beta_6_lb = -3.5;
             obj.lowerBoundaries.beta_7_lb = -3.5;
-            obj.lowerBoundaries.omikron_0_lb = 0.0001;
+            obj.lowerBoundaries.omikron_0_lb = 3;  % In Matlab, below 3 seems to be problematic
             obj.lowerBoundaries.omikron_1_x0_lb = 0.0;
             obj.lowerBoundaries.uniform_x0_lb = 0.0;
 
@@ -133,9 +133,9 @@ classdef ForRegVars
             obj.upperBoundaries.beta_5_up = 3.5;
             obj.upperBoundaries.beta_6_up = 3.5;
             obj.upperBoundaries.beta_7_up = 3.5;
-            obj.upperBoundaries.omikron_0_ub = 100;
-            obj.upperBoundaries.omikron_1_x0_ub = 1;
-            obj.upperBoundaries.uniform_x0_ub = 1;
+            obj.upperBoundaries.omikron_0_ub = 20;
+            obj.upperBoundaries.omikron_1_x0_ub = 0.5;
+            obj.upperBoundaries.uniform_x0_ub = 0.5;
 
             % All prior means
             obj.prior_mean = [obj.beta_0_prior_mean, obj.beta_1_prior_mean,...

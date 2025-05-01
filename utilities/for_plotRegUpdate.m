@@ -1,22 +1,22 @@
-function for_plotRegUpdate(allSubBehavData,samples, ID)
+function for_plotRegUpdate(allSubBehavData,samples, subj_num)
 %FOR_PLOTREGUPDATE This function compares updates of participants and
 % predictions of the regression model
 %
 %   Input
 %       allSubBehavData: All participant data
 %       samples: Samples from the regression model
-%       ID: If given, only specified subject will be plotted
+%       subj_num: If given, only specified subject will be plotted
 %
 %   Output
 %       None
 
 % Check if ID is provided
-if ~exist('ID', 'var') || isempty(ID)
+if ~exist('subj_num', 'var') || isempty(subj_num)
     realUp = allSubBehavData.a_t;
     predUp = samples.a_t;
 else
-    realUp = allSubBehavData.a_t(allSubBehavData.ID == ID);
-    predUp = samples.a_t(allSubBehavData.ID == ID);
+    realUp = allSubBehavData.a_t(allSubBehavData.subj_num == subj_num);
+    predUp = samples.a_t(allSubBehavData.subj_num == subj_num);
 end
 
 % Create figure

@@ -5,11 +5,11 @@
 % 3. Plot estimated parameters
 
 % Number of random starting points for model estimation
-n_sp = 30;
+n_sp = 5;
 rand_sp = true;
 
 % Identify parent directory of this config script
-parentDirectory = fileparts(mfilename('fullpath'));
+parentDirectory = fileparts(fileparts(mfilename('fullpath')));
 cd(parentDirectory)
 addpath(genpath(parentDirectory));
 
@@ -44,13 +44,13 @@ est_vars.which_vars.h = true;
 est_vars.which_vars.s = true;
 est_vars.which_vars.u = true;
 est_vars.which_vars.sigma_H = true;
-% Todo: examine plausible boundaries, currently not really plausuble for radians
+% Todo: examine plausible boundaries, currently not really plausible for radians
 
 % Set agent variables
 agent_vars = ForAgentVars();
 agent_vars.tau_0 = 0.999;
 agent_vars.sigma_0 = 6.1875;
-agent_vars.mu_0 = 3.1416;
+agent_vars.mu_0 = pi;
 agent_vars.max_x = 2 * pi;
 
 % Create estimation-object instance

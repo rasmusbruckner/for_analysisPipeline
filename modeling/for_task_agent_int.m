@@ -103,7 +103,8 @@ for t = 1:n_trials-1
         if sim
 
             % Tranlate into sqrt of updating variance (= standard deviation)
-            sim_a_t(t) = normrnd(a_hat(t), sqrt(1/concentration));
+            % sim_a_t(t) = normrnd(a_hat(t), sqrt(1/concentration));
+            sim_a_t(t) = circ_vmrnd(a_hat(t), concentration, 1);
             sim_b_t(t + 1) = mod(sim_b_t(t) + sim_a_t(t), agent.max_x);
         end
 

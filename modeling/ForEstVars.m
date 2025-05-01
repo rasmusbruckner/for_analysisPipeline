@@ -12,7 +12,7 @@ classdef ForEstVars
         sigma_H = 'sigma_H'; % Catch trial
 
         % Fixed starting points (used if random starting points are disabled)
-        omikron_0_x0 = 100;
+        omikron_0_x0 = 10;
         omikron_1_x0 = 0.01;
         h_x0 = 0.1;
         s_x0 = 0.999;
@@ -20,12 +20,12 @@ classdef ForEstVars
         sigma_H_x0 = 1;
 
         % Range for random starting-point values (used if random starting points are enabled)
-        omikron_0_x0_range = [1, 10];
+        omikron_0_x0_range = [3, 20];
         omikron_1_x0_range = [0.001, 1];
         h_x0_range = [0.001, 0.99];
         s_x0_range = [0.001, 0.99];
         u_x0_range = [1, 10];
-        sigma_H_x0_range = [1, 32];
+        sigma_H_x0_range = [0, 0.5];
 
         % Free parameter indexes
         which_vars = struct();
@@ -59,7 +59,7 @@ classdef ForEstVars
             obj.which_vars.sigma_H = true;
 
             % Estimation lower boundaries
-            obj.lowerBoundaries.omikron_0_lb = 0.1;
+            obj.lowerBoundaries.omikron_0_lb = 3;
             obj.lowerBoundaries.omikron_1_lb = 0.001;
             obj.lowerBoundaries.h_lb = 0.001;
             obj.lowerBoundaries.s_lb = 0.001;
@@ -67,16 +67,16 @@ classdef ForEstVars
             obj.lowerBoundaries.sigma_H_lb = 0;
 
             % Estimation upper boundaries
-            obj.upperBoundaries.omikron_0_ub = 100;
+            obj.upperBoundaries.omikron_0_ub = 20; %100;
             obj.upperBoundaries.omikron_1_ub = 1;
             obj.upperBoundaries.h_ub = 0.999;
             obj.upperBoundaries.s_ub = 0.999;
             obj.upperBoundaries.u_ub = 15;
-            obj.upperBoundaries.sigma_H_ub = 32;
+            obj.upperBoundaries.sigma_H_ub = 0.5;
 
             % Fixed and normative model coefficients
             obj.fixed_mod_coeffs = struct(...
-                obj.omikron_0, 100.0, ...
+                obj.omikron_0, 5, ...
                 obj.omikron_1, 0.0, ...
                 obj.h, 0.1, ...
                 obj.s, 1.0, ...

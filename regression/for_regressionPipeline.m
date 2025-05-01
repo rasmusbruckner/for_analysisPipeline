@@ -6,11 +6,11 @@
 % 4. Compare actual and predicted update distributions
 
 % Number of random starting points for regression estimation
-n_sp = 30;
+n_sp = 50;
 rand_sp = true;
 
 % Identify parent directory of this config script
-parentDirectory = fileparts(mfilename('fullpath'));
+parentDirectory = fileparts(fileparts(mfilename('fullpath')));
 cd(parentDirectory)
 addpath(genpath(parentDirectory));
 
@@ -25,7 +25,7 @@ bidsDir = strcat(parentDirectory, filesep, 'for_data', filesep, 'for_bids_data')
 allSubBehavData = for_preprocessing(bidsDir);
 
 % Number of subjects
-n_subj = length(unique(allSubBehavData.ID));
+n_subj = length(unique(allSubBehavData.subj_num));
 
 % -------------------------------------------
 % 2. Run reduced Bayesian model over the data
@@ -33,7 +33,7 @@ n_subj = length(unique(allSubBehavData.ID));
 
 % Independent normative model parameter initialization
 df_model = table();
-df_model.omikron_0 = repmat(100, n_subj, 1);
+df_model.omikron_0 = repmat(3, n_subj, 1);
 df_model.omikron_1 = zeros(n_subj, 1);
 df_model.h = repmat(0.1, n_subj, 1);
 df_model.s = ones(n_subj, 1);
@@ -60,7 +60,7 @@ reg_vars = ForRegVars();
 reg_vars.n_subj = n_subj;
 reg_vars.n_sp = n_sp;
 reg_vars.rand_sp = rand_sp;
-reg_vars.usePrior = true;
+reg_vars.usePrior = false; %true;
 
 % Determine which parameters should be estimated
 reg_vars.which_vars.beta_0 = true; % intercept
@@ -69,7 +69,7 @@ reg_vars.which_vars.beta_2 = true; % interaction PE and RU
 reg_vars.which_vars.beta_3 = true; % interaction PE and CPP
 reg_vars.which_vars.beta_4 = true; % interaction PE and hit
 reg_vars.which_vars.beta_5 = true; % interaction PE and noise condition
-reg_vars.which_vars.beta_6 = false; % interaction PE and visible
+reg_vars.which_vars.beta_6 = true; % interaction PE and visible
 reg_vars.which_vars.beta_7 = false; % interaction EE and visible
 reg_vars.which_vars.omikron_0 = true; % motor noise (independent of PE)
 reg_vars.which_vars.omikron_1 = true; % learning-rate noise (dependent on PE)
@@ -83,6 +83,9 @@ regression = ForRegression(reg_vars);
 
 % Estimate regression model
 results = regression.run_estimation(allSubBehavData);
+parameters = results.parameters;
+save('parameters.mat', 'parameters');
+writetable(parameters, 'parameters.csv');
 
 % Simple plots of key coefficients
 behavLabels = {'Int', 'PE', 'PE*RU', 'PE*CPP', 'PE*Hit', 'PE*Noise',...
@@ -151,7 +154,7 @@ samplesStruct = table2struct(samples, 'ToScalar', true);
 
 % Example subject
 ID = 1;
-for_plotRegUpdate(allSubBehavData,samples, ID)
+for_plotRegUpdate(allSubBehavData, samples, ID)
 
 % All subjects
-for_plotRegUpdate(allSubBehavData,samples)
+for_plotRegUpdate(allSubBehavData, samples)

@@ -34,17 +34,41 @@ for j = 1:length(allFilenames)
         blockData = load(currentFilename);
         blockData = blockData.taskData;
 
+        % Create struct 
+        blockDataStruct = struct();
+
         % Recode 360 outcome to 0
         blockData.outcome(blockData.outcome == 360) = 0;
+        blockDataStruct.outcome = blockData.outcome;
 
         % Add subject number
-        blockData.ID = repmat(j, length(blockData.actRew), 1);
+        %% rasmus changed 10.04.25 to have separate ID and subj_num
+        blockDataStruct.ID = blockData.ID;
+        blockDataStruct.subj_num = repmat(j, length(blockData.actRew), 1);
+        
+        %ID = subData.ID;
+        %subj_num = subData.subj_num;
+        blockDataStruct.block = blockData.block;
+        blockDataStruct.x_t = blockData.outcome;
+        blockDataStruct.b_t = blockData.pred;
+        blockDataStruct.delta_t = blockData.predErr;
+        blockDataStruct.a_t = blockData.UP;
+        blockDataStruct.e_t = blockData.estErr;
+        blockDataStruct.mu_t = blockData.distMean;
+        blockDataStruct.c_t = blockData.cp;
+        blockDataStruct.tac = blockData.TAC;
+        blockDataStruct.r_t = blockData.hit;
+        blockDataStruct.kappa_t = blockData.concentration;
+        blockDataStruct.v_t = blockData.catchTrial;
+        blockDataStruct.RT = blockData.RT;
+        blockDataStruct.initRT = blockData.initiationRTs;
+        blockDataStruct.initTend = blockData.initialTendency;
 
         % Combine data sets of the subject
         if i == 1
-            subData = blockData;
+            subData = blockDataStruct;
         else
-            subData = catStruct(subData, blockData);
+            subData = catStruct(subData, blockDataStruct);
         end
     end
 
@@ -67,27 +91,47 @@ for j = 1:length(allFilenames)
     end
 
     % Extract variables of interest
-    ID = subData.ID;
-    block = subData.block;
-    x_t = subData.outcome;
-    b_t = subData.pred;
-    delta_t = subData.predErr;
-    a_t = subData.UP;
-    e_t = subData.estErr;
-    mu_t = subData.distMean;
-    c_t = subData.cp;
-    tac = subData.TAC;
-    r_t = subData.hit;
-    kappa_t = subData.concentration;
-    v_t = subData.catchTrial;
-    RT = subData.RT;
-    initRT = subData.initiationRTs;
+    % ID = subData.ID;
+    % subj_num = subData.subj_num;
+    % block = subData.block;
+    % x_t = subData.outcome;
+    % b_t = subData.pred;
+    % delta_t = subData.predErr;
+    % a_t = subData.UP;
+    % e_t = subData.estErr;
+    % mu_t = subData.distMean;
+    % c_t = subData.cp;
+    % tac = subData.TAC;
+    % r_t = subData.hit;
+    % kappa_t = subData.concentration;
+    % v_t = subData.catchTrial;
+    % RT = subData.RT;
+    % initRT = subData.initiationRTs;
+    % initTend = subData.initialTendency;
 
     % Compute new-block index
-    new_block = [true; diff(subData.block) ~= 0];
-
-    % Combine variables of interest in events file
-    events_t = table(ID, block, new_block, x_t, b_t, delta_t, a_t, e_t, mu_t, c_t, tac, r_t, kappa_t, v_t, RT, initRT);
+    subData.new_block = [true; diff(subData.block) ~= 0];
+    
+    events_t = struct2table(subData);
+    % % Combine variables of interest in events file
+    % events_t = table(subData.ID,...
+    %     subData.subj_num,...
+    %     subData.block,...
+    %     subData.new_block,...
+    %     subData.x_t,...
+    %     subData.b_t,...
+    %     subData.delta_t,...
+    %     subData.a_t,...
+    %     subData.e_t,...
+    %     subData.mu_t,...
+    %     subData.c_t,...
+    %     subData.tac,...
+    %     subData.r_t,...
+    %     subData.kappa_t,...
+    %     subData.v_t,...
+    %     subData.RT,...
+    %     subData.initRT,...
+    %     subData.initTend);
 
     % Events.csv and .tsv filenames
     events_csv = fullfile(data_dir, [[sub_string, num2str(j)] '_task-cannon_behav.csv']);

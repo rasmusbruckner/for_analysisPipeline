@@ -1,4 +1,4 @@
-function concentration = residual_fun(abs_dist, motor_noise, lr_noise)
+function kappa_up = residual_fun(abs_dist, motor_noise, lr_noise)
 %RESIDUAL_FUN This function computes updating noise (residuals)
 % as a combination of two noise components
 %
@@ -11,14 +11,16 @@ function concentration = residual_fun(abs_dist, motor_noise, lr_noise)
 %       lr_noise: Learning-rate-noise parameter (more noise for larger update)
 %
 %   Output
-%       concentration: Updating noise expressed as von-Mises concentration
+%       kappa_up: Updating noise expressed as von-Mises concentration
 
-% Compute updating noise expressed as variance, where
-% (1) 1/motor noise is updating variance due to imprecise motor control and
+% Compute updating noise expressed as variance
+% (1) motor noise is updating variance due to imprecise motor control and
 % (2) learning-rate noise models more noise for larger updates
-var = (1./motor_noise) + abs_dist * lr_noise;
+up_noise = motor_noise + lr_noise * (rad2deg(abs_dist));
 
-% Translate back to concentration
-concentration = 1./var;
+% Convert std of update distribution to radians and kappa
+up_noise_radians = deg2rad(up_noise);
+up_var_radians = up_noise_radians.^2;
+kappa_up = 1 ./ up_var_radians;
 
 end

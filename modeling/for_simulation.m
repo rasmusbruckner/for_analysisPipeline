@@ -26,7 +26,8 @@ true_params = NaN;
 for i = 1:n_subj
 
     % Select current subject
-    subsetIdx = allSubBehavData.ID == i;
+    %subsetIdx = allSubBehavData.ID == i;
+    subsetIdx = allSubBehavData.subj_num == i;
 
     % Apply filtering to each field of the struct
     df_subj = structfun(@(x) x(subsetIdx, :), allSubBehavData, 'UniformOutput', false);
@@ -60,7 +61,7 @@ for i = 1:n_subj
     [~, df_data] = for_task_agent_int(df_subj, agent, agent_vars, sel_coeffs, sim);
 
     % Store results
-    df_data.ID = repmat(i, height(df_data), 1);
+    df_data.subj_num = repmat(i, height(df_data), 1);
     df_sim = [df_sim; df_data];
 
     % Extract estimation error

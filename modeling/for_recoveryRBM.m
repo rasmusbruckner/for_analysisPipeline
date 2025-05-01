@@ -6,11 +6,11 @@
 % 4. Plot correlations
 
 % Number of random starting points for model estimation
-n_sp = 5;
+n_sp = 10;
 rand_sp = true;
 
 % Identify parent directory of this config script
-parentDirectory = fileparts(mfilename('fullpath'));
+parentDirectory = fileparts(fileparts(mfilename('fullpath')));
 cd(parentDirectory)
 addpath(genpath(parentDirectory));
 
@@ -25,7 +25,7 @@ bidsDir = strcat(parentDirectory, filesep, 'for_data', filesep, 'for_bids_data')
 allSubBehavData = for_preprocessing(bidsDir);
 
 % Number of subjects
-n_subj = length(unique(allSubBehavData.ID));
+n_subj = length(unique(allSubBehavData.subj_num));
 
 % Set agent variables
 agent_vars = ForAgentVars();
@@ -43,11 +43,11 @@ est_vars.rand_sp = rand_sp;
 
 % Determine free parameters
 est_vars.which_vars.omikron_0 = true;
-est_vars.which_vars.omikron_1 = false;
+est_vars.which_vars.omikron_1 = true;
 est_vars.which_vars.h = true;
 est_vars.which_vars.s = true;
 est_vars.which_vars.u = true;
-est_vars.which_vars.sigma_H = false;
+est_vars.which_vars.sigma_H = true;
 
 % -------------------------
 % 2. Simulate data with RBM
@@ -57,10 +57,15 @@ est_vars.which_vars.sigma_H = false;
 % --------------------------
 
 df_model = table();
-df_model.omikron_0 = rand(n_subj,1) * 100;
+
+if est_vars.which_vars.omikron_0
+   df_model.omikron_0 = rand(n_subj,1) * 10 + 3;
+else
+ df_model.omikron_1 = zeros(n_subj, 1);
+end
 
 if est_vars.which_vars.omikron_1
-    df_model.omikron_1 = rand(n_subj, 1) * 0.2;
+    df_model.omikron_1 = rand(n_subj, 1) * 0.3;
 else
     df_model.omikron_1 = zeros(n_subj, 1);
 end
@@ -83,9 +88,8 @@ else
     df_model.u = zeros(n_subj,1);
 end
 
-% Todo: examine plausible boundaries, currently not really plausuble for radians
 if est_vars.which_vars.sigma_H
-    df_model.sigma_H = rand(n_subj, 1) * 10;
+    df_model.sigma_H = rand(n_subj, 1) * 0.5;
 else
     df_model.sigma_H = zeros(n_subj, 1);
 end
@@ -106,6 +110,7 @@ estimation = ForEstimation(est_vars);
 
 % Translate data table to structure
 dataStructSingle = table2struct(df_data, 'ToScalar', true);
+dataStructSingle.mu_t = allSubBehavData.mu_t;
 
 % Estimate model
 recoveryResults = estimation.run_estimation(dataStructSingle, agent_vars);
