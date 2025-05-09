@@ -61,7 +61,7 @@ df_model = table();
 if est_vars.which_vars.omikron_0
    df_model.omikron_0 = rand(n_subj,1) * 10 + 3;
 else
- df_model.omikron_1 = zeros(n_subj, 1);
+ df_model.omikron_0 = zeros(n_subj, 1);
 end
 
 if est_vars.which_vars.omikron_1
