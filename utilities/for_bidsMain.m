@@ -82,7 +82,8 @@ for j = 1:length(allFilenames)
         % Add subject number
         %% rasmus changed 10.04.25 to have separate ID and subj_num
         blockDataStruct.ID = blockData.ID;
-        blockDataStruct.subj_num = repmat(j, length(blockData.actRew), 1);
+
+        blockDataStruct.subj_num = repmat(j, length(blockData.cBal), 1);
         
         %ID = subData.ID;
         %subj_num = subData.subj_num;
