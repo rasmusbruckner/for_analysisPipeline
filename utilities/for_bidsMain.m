@@ -68,6 +68,11 @@ for j = 1:length(allFilenames)
         % Select current subject
         currentFilename = subjFilenames(i).name;
 
+        %making sure we only load matfiles
+        if ~strcmp(currentFilename(end-4:end), '.mat')
+            continue
+        end
+
         % Load data
         blockData = load(currentFilename);
         blockData = blockData.taskData;
