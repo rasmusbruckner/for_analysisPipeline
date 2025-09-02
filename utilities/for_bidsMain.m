@@ -8,6 +8,16 @@ function for_bidsMain(dataDir, bidsDir)
 %   Output
 %       None
 
+%prompt to ask which project to run the analysis for
+dlgfield = [1 45];
+project = inputdlg('Which Project?', 'Further Info', dlgfield, {'NA'});
+project = project{1};
+
+%in project 7 ask which session
+if strcmp(project,'7')
+    session = inputdlg('Which session?', [], dlgfield, {'1'});
+    session = session{1};
+end
 
 % Add data directory and jsonlab library
 addpath(genpath(dataDir));
