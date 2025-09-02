@@ -8,31 +8,59 @@ function for_bidsMain(dataDir, bidsDir)
 %   Output
 %       None
 
-%prompt to ask which project to run the analysis for
-dlgfield = [1 45];
-project = inputdlg('Which Project?', 'Further Info', dlgfield, {'NA'});
-project = project{1};
-
-%in project 7 ask which session
-if strcmp(project,'7')
-    session = inputdlg('Which session?', [], dlgfield, {'1'});
-    session = session{1};
-end
 
 % Add data directory and jsonlab library
 addpath(genpath(dataDir));
 addpath(genpath('JSONLAB'));
 
+%prompt to ask which project to run the analysis for
+dlgfield = [1 45];
+project = inputdlg('Which Project?', 'Further Info', dlgfield, {'NA'});
+project = project{1};
+
+
 % Extract folders and data filnenames
-whichFolders = dir(fullfile(dataDir));
-allFilenames = whichFolders(~ismember({whichFolders.name}, {'.','..', '.DS_Store'}));
+if strcmp(project, 'NA') %default   
+    whichFolders = dir(fullfile(dataDir));
+    allFilenames = whichFolders(~ismember({whichFolders.name}, {'.','..', '.DS_Store'}));
+ 
+elseif strcmp(project,'7') %in P7 set up Filenames, so they can be fed into this Loop
+    %check which session data is from
+    session = inputdlg('Which session?', 'More info', dlgfield, {'1'});
+    session = session{1};
+
+    %extract folders with subjects' raw data
+    %subjFolders = dir(fullfile(dataDir, 'sub-7*'));
+    allFilenames = dir(fullfile(dataDir, 'sub-7*'));
+
+    %set session-specific directories
+    if strcmp(session,'1')
+        bidsDir = strcat(bidsDir, filesep, 'CC');
+        dirSpecs = strcat('ses-1', filesep, 'task-CC', filesep, 'behav');
+    elseif strcmp(session,'2')
+        dirSpecs = strcat('ses-2', filesep, 'task-SF', filesep, 'behav');
+        strcat(bidsDir, filesep, 'Feedback');
+    end
+    
+    %create session-specific subfolder in bidsDir
+    if ~exist(bidsDir, 'dir')
+        mkdir(bidsDir)
+    end
+
+end
+
 
 % Cycle over filenames
 for j = 1:length(allFilenames)
 
     % Go into subject folder and extract data files
-    whichFiles = dir(fullfile(dataDir, allFilenames(j).name));
-    subjFilenames = whichFiles(~ismember({whichFiles.name},{'.','..', '.DS_Store'}));
+    if strcmp(project, 'NA')
+        whichFiles = dir(fullfile(dataDir, allFilenames(j).name));
+        subjFilenames = whichFiles(~ismember({whichFiles.name},{'.','..', '.DS_Store'}));
+    elseif strcmp(project, '7')
+        whichFiles = dir(fullfile(dataDir, allFilenames(j).name, dirSpecs));
+        subjFilenames = whichFiles(~ismember({whichFiles.name},{'.','..', '.DS_Store'}));
+    end
 
     % Cycle over subject filenames
     for i = 1:length(subjFilenames)
