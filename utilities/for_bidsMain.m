@@ -69,7 +69,7 @@ for j = 1:length(allFilenames)
         currentFilename = subjFilenames(i).name;
 
         %making sure we only load matfiles
-        if ~strcmp(currentFilename(end-4:end), '.mat')
+        if ~strcmp(currentFilename(end-3:end), '.mat')
             continue
         end
 
@@ -120,7 +120,9 @@ for j = 1:length(allFilenames)
     % ---------------------------------------
 
     % Data directory with variable subject string
-    if j<10
+    if j<100
+        sub_string = 'sub_00';
+    elseif j<10
         sub_string = 'sub_0';
     else
         sub_string = 'sub_';
