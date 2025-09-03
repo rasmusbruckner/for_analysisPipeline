@@ -122,7 +122,7 @@ for j = 1:length(allFilenames)
     % Data directory with variable subject string
     if j<10
         sub_string = 'sub_00';
-    elseif j>10 && j<100
+    elseif j>=10 && j<100
         sub_string = 'sub_0';
     else
         sub_string = 'sub_';
@@ -272,6 +272,7 @@ end
                 % Get the data from the corresponding columns
                 col1 = existingTable{:, c};
                 col2 = newTable{:, c};
+                if iscell(col2); col2 = str2double(col2); end %accounts for ID, which is still string in newTable
 
                 % Compare the columns element-wise, accounting for NaNs and tolerance
                 isEqualColumn = isequaln(col1, col2) || all(abs(col1 - col2) < tolerance | (isnan(col1) & isnan(col2)));
