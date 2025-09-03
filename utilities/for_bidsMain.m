@@ -120,9 +120,9 @@ for j = 1:length(allFilenames)
     % ---------------------------------------
 
     % Data directory with variable subject string
-    if j<100
+    if j<10
         sub_string = 'sub_00';
-    elseif j<10
+    elseif j>10 && j<100
         sub_string = 'sub_0';
     else
         sub_string = 'sub_';
