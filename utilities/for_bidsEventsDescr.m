@@ -12,8 +12,13 @@ metadataBehav = struct();
 
 % ID
 metadataBehav.ID.LongName = 'subject ID';
-metadataBehav.ID.Description = 'Numbers start from 1 to maximum number of subjects';
+metadataBehav.ID.Description = 'Five-digit subject identifyer, indicating sub-project (first digit) and number of subjects (last digits)';
 metadataBehav.ID.Units = 'integers';
+
+% age
+metadataBehav.age.LongName = 'subject age';
+metadataBehav.age.Description = 'Subject age in years';
+metadataBehav.age.Units = 'integers';
 
 % block
 metadataBehav.block.LongName = 'condition block';
