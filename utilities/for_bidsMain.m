@@ -53,9 +53,9 @@ for j = 1:length(allFilenames)
 
     % Go into subject folder and extract data files
     if strcmp(project, 'NA')
-        subjFilenames = dir(fullfile(dataDir, allFilenames(j).name, '*.mat'));
+        subjFilenames = dir(fullfile(dataDir, allFilenames(j).name, '*exp*.mat'));
     elseif strcmp(project, '7')
-        subjFilenames = dir(fullfile(dataDir, allFilenames(j).name, dirSpecs, '*.mat'));
+        subjFilenames = dir(fullfile(dataDir, allFilenames(j).name, dirSpecs, '*exp*.mat'));
     end
 
     % Cycle over subject filenames
