@@ -8,20 +8,22 @@
 n_sp = 5;
 rand_sp = true;
 
-% Identify parent directory of this config script
-parentDirectory = fileparts(fileparts(mfilename('fullpath')));
-cd(parentDirectory)
-addpath(genpath(parentDirectory));
-
-% This is the BIDS folder
-bidsDir = strcat(parentDirectory, filesep, 'for_data', filesep, 'for_bids_data');
-
-% ----------------
-% 1. Preprocessing
-% ----------------
-
-% Run preprocessing to get all behavioral data
-allSubBehavData = for_preprocessing(bidsDir);
+if ~exist('allSubBehavData', 'var')
+    % Identify parent directory of this config script
+    parentDirectory = fileparts(fileparts(mfilename('fullpath')));
+    cd(parentDirectory)
+    addpath(genpath(parentDirectory));
+    
+    % This is the BIDS folder
+    bidsDir = strcat(parentDirectory, filesep, 'for_data', filesep, 'for_bids_data');
+    
+    % ----------------
+    % 1. Preprocessing
+    % ----------------
+    
+    % Run preprocessing to get all behavioral data
+    allSubBehavData = for_preprocessing(bidsDir);
+end
 
 % Number of subjects
 n_subj = length(unique(allSubBehavData.ID));
