@@ -30,7 +30,6 @@ elseif strcmp(project,'7') %in P7 set up Filenames, so they can be fed into this
     session = session{1};
 
     %extract folders with subjects' raw data
-    %subjFolders = dir(fullfile(dataDir, 'sub-7*'));
     allFilenames = dir(fullfile(dataDir, 'sub-7*'));
 
     %set session-specific directories
@@ -51,15 +50,13 @@ end
 
 
 % Cycle over filenames
-for j = 1:length(allFilenames)
+for j = 34:35 %1:length(allFilenames)
 
     % Go into subject folder and extract data files
     if strcmp(project, 'NA')
-        whichFiles = dir(fullfile(dataDir, allFilenames(j).name));
-        subjFilenames = whichFiles(~ismember({whichFiles.name},{'.','..', '.DS_Store'}));
+        subjFilenames = dir(fullfile(dataDir, allFilenames(j).name, '*.mat'));
     elseif strcmp(project, '7')
-        whichFiles = dir(fullfile(dataDir, allFilenames(j).name, dirSpecs));
-        subjFilenames = whichFiles(~ismember({whichFiles.name},{'.','..', '.DS_Store'}));
+        subjFilenames = dir(fullfile(dataDir, allFilenames(j).name, dirSpecs, '*.mat'));
     end
 
     % Cycle over subject filenames
@@ -67,11 +64,6 @@ for j = 1:length(allFilenames)
 
         % Select current subject
         currentFilename = subjFilenames(i).name;
-
-        %making sure we only load matfiles
-        if ~strcmp(currentFilename(end-3:end), '.mat')
-            continue
-        end
 
         % Load data
         blockData = load(currentFilename);
