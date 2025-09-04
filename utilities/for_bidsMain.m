@@ -8,7 +8,6 @@ function for_bidsMain(dataDir, bidsDir)
 %   Output
 %       None
 
-%%%%%%%%%% LL %%%%%%%%%%%%%%%%%%%
 % Add data directory and jsonlab library
 addpath(genpath(dataDir));
 addpath(genpath('JSONLAB'));
@@ -38,7 +37,7 @@ elseif strcmp(project,'7') %in P7 set up Filenames, so they can be fed into this
         dirSpecs = strcat('ses-1', filesep, 'task-CC', filesep, 'behav');
     elseif strcmp(session,'2')
         dirSpecs = strcat('ses-2', filesep, 'task-SF', filesep, 'behav');
-        strcat(bidsDir, filesep, 'Feedback');
+        bidsDir = strcat(bidsDir, filesep, 'Feedback');
     end
     
     %create session-specific subfolder in bidsDir
