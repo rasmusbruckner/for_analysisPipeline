@@ -50,7 +50,7 @@ end
 
 
 % Cycle over filenames
-for j = 34:35 %1:length(allFilenames)
+for j = 1:length(allFilenames)
 
     % Go into subject folder and extract data files
     if strcmp(project, 'NA')
@@ -79,6 +79,7 @@ for j = 34:35 %1:length(allFilenames)
         % Add subject number
         %% rasmus changed 10.04.25 to have separate ID and subj_num
         blockDataStruct.ID = blockData.ID;
+        blockDataStruct.age = blockData.age;
 
         blockDataStruct.subj_num = repmat(j, length(blockData.cBal), 1);
         
